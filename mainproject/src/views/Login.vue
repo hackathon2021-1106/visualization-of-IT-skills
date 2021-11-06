@@ -5,7 +5,7 @@
         </form>
         <div id="login"></div>
         <button @click="login(); adddb()">OK</button>
-        <p>{{message}}</p>
+        <p>↑push to {{message}}</p>
         
     </div>
 </template>
@@ -15,7 +15,7 @@
 //import init from './firestore.js';
 import signin from './Signin.js';
 import init from './firestore.js';
-import router from '../router';
+//import router from '../router';
 import adddb from '../create_db/add_db.js';
 
 //import signinwithpopup from './Signinwithpopup';
@@ -29,17 +29,28 @@ export default {
             login:function(){
             init.init;
             //signinwithpopup.func
-            signin.func1();
-            signin.func2();
-            alert('aaaaa');
+            var userid=signin.func1();
+            var lists=signin.func2();
+            let token=lists[0];
+            let user=lists[1]
+            if (userid){
+              alert('func1,userid is'+userid);
+            }
+            if (token){
+              alert('func2,token is'+String(token));
+              alert('func2,user is'+String(user));
+            }
+            
+            
             },
             adddb:function(){
-              adddb.gettoken();
-              adddb.adddb();
-              alert('bbbbb')
-            },
-            jump:function(){
-            router.push('./home');
+              var object=adddb.methods.gettoken();
+              if(object!==undefined){
+                alert('object=>'+object);
+                adddb.methods.adddb(object);
+              }else{ 
+              alert('bbbbb');
+              }
             }},
         computed:{},
         watch: {

@@ -22,7 +22,7 @@ export default{
       const sample1=doc(db,'Users',object);
       alert('addDB!');
       var docData={
-        object,
+        object
       };
       setDoc(sample1,docData);
       } 
