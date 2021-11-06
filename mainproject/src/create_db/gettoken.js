@@ -1,22 +1,24 @@
-import {doc, setDoc} from "firebase/firestore";
-import db from "./firestore.js"
-import signin from '../views/Signin.js';
+//import {doc, setDoc} from "firebase/firestore";
+//import db from "./firestore.js"
+import func1 from '../views/neosign.js';
 
 
-export default{
-  data:{
-    msg:{'key':'value'}
-  },
-  methods: {
-    gettoken:function(){
-      var tokens,users=signin.func2();
-      if(tokens){
-        alert('gettoken,users:'+users);
-      }
-      
+export function gettoken(){
+  var [tokens,users]=func1();
+    if(tokens){
+      alert('gettoken,users:'+users);
       var object={users:tokens}
       this.msg=object;
       return object;
+    }
+    else{
+      alert('token_error');
+    }
+  }
+  
+   /*
+      
+      
     },
     adddb:function(object){
       const sample1=doc(db,'Users',object);
@@ -31,5 +33,5 @@ export default{
 
 } 
 
-  
+*/  
 

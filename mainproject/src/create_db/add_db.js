@@ -1,7 +1,7 @@
-import {doc, setDoc} from "firebase/firestore";
-import db from "./firestore.js"
+import {doc, setDoc,getFirestore} from "firebase/firestore";
 import signin from '../views/Signin.js';
 
+var db=getFirestore();
 
 export default{
   data:{

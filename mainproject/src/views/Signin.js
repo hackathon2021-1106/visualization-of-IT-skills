@@ -1,7 +1,7 @@
-import { getAuth, signInWithRedirect, getRedirectResult, GithubAuthProvider,onAuthStateChanged } from "firebase/auth";
+import { getAuth, signInWithRedirect, getRedirectResult, GithubAuthProvider } from "firebase/auth";
 import router from '../router'
 
-function func1(){
+export function func1(){
   var provider = new GithubAuthProvider();
   provider.addScope('user');
   provider.setCustomParameters({
@@ -10,25 +10,56 @@ function func1(){
 
   var auth = getAuth();
   //var user=auth.currentUser;
-  onAuthStateChanged(auth, (user) => {
+  signInWithRedirect(auth,provider);
+  auth.onAuthStateChanged((user) => {
     if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      alert('func1,userid:'+String(uid));
-      signInWithRedirect(auth,provider);
+      alert('stateOK');
       router.push('./loading')
-      return uid;
+      }
+    else{
+      alert('redirect to loginpage');
+      router.push('/')
+    }});
+  var username=auth.currentUser;
+  if(username){alert('func2,username='+String(username));}
+  getRedirectResult(auth)
+    .then((result) => {
+      //alert('then');
+      const credential = GithubAuthProvider.credentialFromResult(result);
+      if (credential) {
+        // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+        const token = credential.accessToken;
+        //const user = result.user;
+        // ...
+        alert('credential,Success!');
+        router.push({path:'/loading',params:{state:'OK'}})
+        return token;  
+      }
+      else{
+        alert('credential error!');
+        router.push('/')
+      }
 
-    } else {
-      alert('have not logined');
-      signInWithRedirect(auth,provider);
-      router.push('./loading')
-    }
-  });
+      // The signed-in user info.
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      alert('catch');
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
   
+      // The AuthCredential type that was used.
+      // ...
+      alert('errorcode'+errorCode,errorMessage);
+      router.push('/')
+    });
+
 }
 
+  
+
+/*
 function func2(){ 
   var provider=new GithubAuthProvider();
   var auth = getAuth();
@@ -69,4 +100,4 @@ function func2(){
     });
 }
 
-export default {func1,func2};
+export default {func1,func2};*/
