@@ -15,7 +15,8 @@
 //import init from './firestore.js';
 import {func1} from './Signin.js';
 //import router from '../router';
-import adddb from '../create_db/add_db.js';
+import {adddb} from '../create_db/add_db.js';
+import {doc, setDoc,getFirestore} from "firebase/firestore";
 
 //import signinwithpopup from './Signinwithpopup';
 export default {
@@ -24,28 +25,43 @@ export default {
                 message:'login'
             }
         },
-        
         methods: {
             login:function(){
             //signinwithpopup.func
-            var token=func1();
-            //var token=lists[0];
-            //var user=lists[1];
+            alert('start');
+            var array=func1();
+            var token=array[0];
+            var user=array[1];
             alert('lists'+token);
             if(token!==undefined){
                 alert('func2,token is'+String(token));
-                //alert('func2,user is'+String(user));
+                alert('func2,user is'+String(user));
+                return array;
               }
             else{alert('failed to get token');}
             },
             adddb:function(){
-              var object=adddb.methods.gettoken();
-              if(object!==undefined){
-                alert('object=>'+object);
-                adddb.methods.adddb(object);
-              }else{ 
-              alert('bbbbb');
+              var db=getFirestore();
+              var array=this.login()
+              if(array){
+              alert('gettoken,users:');
+              var token=array[0]
+              var user=array[1]
+              var uid=user.uid
+              const sample1=doc(db,'Users',uid);
+              alert('addDB!');
+              var docData={
+              tokens:token
+              };
+              setDoc(sample1,docData);
+              } 
+              else{
+                alert('cannot get token');
               }
+              console.log('adddb')
+              adddb();
+              alert('Yes,db!');
+              
             }
         },
         computed:{},

@@ -1,35 +1,33 @@
 import {doc, setDoc,getFirestore} from "firebase/firestore";
-import signin from '../views/Signin.js';
+import {func1} from '../views/Signin.js';
 
 var db=getFirestore();
 
-export default{
-  data:{
-    msg:{'key':'value'}
-  },
-  methods: {
-    gettoken:function(){
-      var tokens,users=signin.func2();
-      if(tokens){
-        alert('gettoken,users:'+users);
-      }
-      
-      var object={users:tokens}
-      this.msg=object;
-      return object;
-    },
-    adddb:function(object){
-      const sample1=doc(db,'Users',object);
+export function adddb(){
+  var array=func1();
+    if(array){
+      alert('gettoken,users:');
+    
+    var token=array[0]
+    var user=array[1]
+    var uid=user.uid
+    const sample1=doc(db,'Users',uid);
       alert('addDB!');
       var docData={
-        object,
+       tokens:token
       };
       setDoc(sample1,docData);
       } 
-    
+    else{
+      alert('cannot get token');
     }
+    }
+    
+   
 
-} 
+    
+      
+
 
   
 

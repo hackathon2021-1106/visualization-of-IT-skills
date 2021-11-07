@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { initializeApp } from "firebase/app";
+import firebase from "firebase/compat/app";
 
 Vue.config.productionTip = false
 
@@ -14,7 +14,7 @@ const firebaseConfig = {
   appId:process.env.VUE_APP_APP_ID,
 };
 
-initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 new Vue({
   router,
